@@ -1,49 +1,64 @@
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 
+const lineWidth = document.getElementById("line-width")
+
+const eraser = document.getElementById("eraser-btn")
+const color = document.getElementById("color")
+const colorOption = Array.from(document.getElementsByClassName("color-option"))
+
 canvas.width = 800
 canvas.height = 800
 
-let mouseClick = false
+ctx.lineWidth = lineWidth.value
 
-const color = [
-    "#1abc9c",
-    "#2ecc71",
-    "#3498db",
-    "#9b59b6",
-    "#34495e",
-    "#f1c40f",
-    "#e67e22",
-    "#e74c3c"
-]
+let isPainting = false
 
 function onMouseMove(event) {
-    if (mouseClick) {
-        ctx.beginPath()
-        ctx.moveTo(0, 0)
+    if (isPainting) {
         ctx.lineTo(event.offsetX, event.offsetY)
-        ctx.strokeStyle = color[Math.floor(Math.random() * color.length)]
         ctx.stroke()
+        return
     }
+    ctx.moveTo(event.offsetX, event.offsetY)
 }
 
-function onMouseDown() {
-    if (mouseClick) {
-        mouseClick = false
-    } else {
-        mouseClick = true
-    }
+function startPainting() {
+    isPainting = true
 }
 
-function onMouseUp() {
-    mouseClick = false
+function cancelPainting() {
+    isPainting = false
+    ctx.beginPath()
 }
 
-function onMouseLeave() {
-    mouseClick = false
+function onLineWidthChange(event) {
+    ctx.lineWidth = event.target.value
+
+}
+
+function onEraserClick() {
+    ctx.strokeStyle = "white"
+}
+
+function onColocChange(event) {
+    ctx.strokeStyle = event.target.value
+}
+
+function onColorOptionClick(event) {
+    ctx.strokeStyle = event.target.dataset.color
+    color.value = event.target.dataset.color
+
 }
 
 canvas.addEventListener("mousemove", onMouseMove)
-canvas.addEventListener("mouseup", onMouseUp)
-canvas.addEventListener("mousedown", onMouseDown)
-canvas.addEventListener("mouseleave", onMouseLeave)
+canvas.addEventListener("mousedown", startPainting)
+canvas.addEventListener("mouseup", cancelPainting)
+canvas.addEventListener("mouseleave", cancelPainting)
+
+lineWidth.addEventListener("change", onLineWidthChange)
+
+eraser.addEventListener("click", onEraserClick)
+
+color.addEventListener("change", onColocChange)
+colorOption.forEach(color => color.addEventListener("click", onColorOptionClick))
