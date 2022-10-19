@@ -4,8 +4,11 @@ const lineWidth = document.getElementById("line-width")
 const color = document.getElementById("color")
 const colorOption = Array.from(document.getElementsByClassName("color-option"))
 const modeBtn = document.getElementById("mode-btn")
+const destroyBtn = document.getElementById("destroy-btn")
+const eraserBtn = document.getElementById("eraser-btn")
 
-console.log(modeBtn)
+const CANVAS_WIDTH = 800
+const CANVAS_HEIGHT = 800
 
 let isPainting = false
 let isFilling = false
@@ -66,8 +69,19 @@ function onModeBtn() {
 
 function onCanvasClick() {
     if (isFilling) {
-        ctx.fillRect(0, 0, 800, 800)
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
     }
+}
+
+function onDestroyBtn() {
+    ctx.fillStyle = "white"
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+}
+
+function onEraserBtn() {
+    ctx.strokeStyle = "white"
+    isFilling = false
+    modeBtn.innerText = "Fill"
 }
 
 
@@ -81,3 +95,5 @@ lineWidth.addEventListener("change", onLineWidthChange)
 color.addEventListener("change", onColorChange)
 colorOption.forEach(color => color.addEventListener("click", onColorClick))
 modeBtn.addEventListener("click", onModeBtn)
+destroyBtn.addEventListener("click", onDestroyBtn)
+eraserBtn.addEventListener("click", onEraserBtn)
