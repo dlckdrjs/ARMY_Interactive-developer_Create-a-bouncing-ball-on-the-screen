@@ -1,99 +1,49 @@
-const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d");
-const lineWidth = document.getElementById("line-width")
-const color = document.getElementById("color")
-const colorOption = Array.from(document.getElementsByClassName("color-option"))
-const modeBtn = document.getElementById("mode-btn")
-const destroyBtn = document.getElementById("destroy-btn")
-const eraserBtn = document.getElementById("eraser-btn")
+const canvas = document.querySelector("canvas")
+const ctx = canvas.getContext("2d")
 
-const CANVAS_WIDTH = 800
-const CANVAS_HEIGHT = 800
+canvas.width = 800
+canvas.height = 800
 
-let isPainting = false
-let isFilling = false
+let mouseClick = false
 
-canvas.width = 800;
-canvas.height = 800;
+const color = [
+    "#1abc9c",
+    "#2ecc71",
+    "#3498db",
+    "#9b59b6",
+    "#34495e",
+    "#f1c40f",
+    "#e67e22",
+    "#e74c3c"
+]
 
-ctx.lineWidth = lineWidth.value
-
-
-
-function onMove(event) {
-    if (isPainting) {
+function onMouseMove(event) {
+    if (mouseClick) {
+        ctx.beginPath()
+        ctx.moveTo(0, 0)
         ctx.lineTo(event.offsetX, event.offsetY)
+        ctx.strokeStyle = color[Math.floor(Math.random() * color.length)]
         ctx.stroke()
-        return
     }
-
-    ctx.beginPath()
-    ctx.moveTo(event.offsetX, event.offsetY)
 }
 
-function startPainting() {
-    isPainting = true
-}
-
-function cancelPainting() {
-    isPainting = false
-}
-
-function onLineWidthChange(event) {
-    ctx.lineWidth = event.target.value
-}
-
-function onColorChange(event) {
-    ctx.strokeStyle = event.target.value
-    ctx.fillStyle = event.target.value
-}
-
-function onColorClick(event) {
-    const colorValue = event.target.dataset.color
-
-    ctx.strokeStyle = colorValue
-    ctx.fillStyle = colorValue
-    color.value = colorValue
-
-}
-
-function onModeBtn() {
-    if (isFilling) {
-        isFilling = false
-        modeBtn.innerText = "Fill"
+function onMouseDown() {
+    if (mouseClick) {
+        mouseClick = false
     } else {
-        isFilling = true
-        modeBtn.innerText = "Draw"
+        mouseClick = true
     }
 }
 
-function onCanvasClick() {
-    if (isFilling) {
-        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
-    }
+function onMouseUp() {
+    mouseClick = false
 }
 
-function onDestroyBtn() {
-    ctx.fillStyle = "white"
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+function onMouseLeave() {
+    mouseClick = false
 }
 
-function onEraserBtn() {
-    ctx.strokeStyle = "white"
-    isFilling = false
-    modeBtn.innerText = "Fill"
-}
-
-
-
-canvas.addEventListener("mousemove", onMove)
-canvas.addEventListener("mousedown", startPainting)
-canvas.addEventListener("mouseup", cancelPainting)
-canvas.addEventListener("mouseleave", cancelPainting)
-canvas.addEventListener("click", onCanvasClick)
-lineWidth.addEventListener("change", onLineWidthChange)
-color.addEventListener("change", onColorChange)
-colorOption.forEach(color => color.addEventListener("click", onColorClick))
-modeBtn.addEventListener("click", onModeBtn)
-destroyBtn.addEventListener("click", onDestroyBtn)
-eraserBtn.addEventListener("click", onEraserBtn)
+canvas.addEventListener("mousemove", onMouseMove)
+canvas.addEventListener("mouseup", onMouseUp)
+canvas.addEventListener("mousedown", onMouseDown)
+canvas.addEventListener("mouseleave", onMouseLeave)
