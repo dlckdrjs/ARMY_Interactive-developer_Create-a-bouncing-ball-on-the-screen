@@ -3,16 +3,16 @@ const ctx = canvas.getContext("2d")
 
 const lineWidth = document.getElementById("line-width")
 
-const modeBtn = document.getElementById("mode-btn-fill")
 
-
-const eraser = document.getElementById("eraser-btn")
 const color = document.getElementById("color")
 const colorOption = Array.from(document.getElementsByClassName("color-option"))
+
+const modeBtn = document.getElementById("mode-btn-fill")
+const eraser = document.getElementById("eraser-btn")
 const reset = document.getElementById("reset-btn")
+const saveBtn = document.getElementById("save")
 
 const fileInput = document.getElementById("file")
-
 const textInput = document.getElementById("text")
 
 
@@ -121,6 +121,15 @@ function onDoubleClick(event) {
     }
 }
 
+function onSaveClick() {
+    const url = canvas.toDataURL()
+    const a = document.createElement("a")
+
+    a.href = url
+    a.download = "myDrawung.png"
+    a.click()
+}
+
 canvas.addEventListener("mousemove", onMouseMove)
 canvas.addEventListener("mousedown", startPainting)
 canvas.addEventListener("mouseup", cancelPainting)
@@ -132,10 +141,11 @@ lineWidth.addEventListener("change", onLineWidthChange)
 
 eraser.addEventListener("click", onEraserClick)
 reset.addEventListener("click", onResetClick)
+modeBtn.addEventListener("click", modeBtnClick)
+saveBtn.addEventListener("click", onSaveClick)
 
+fileInput.addEventListener("change", onFileChange)
 color.addEventListener("change", onColocChange)
 colorOption.forEach(color => color.addEventListener("click", onColorOptionClick))
 
-modeBtn.addEventListener("click", modeBtnClick)
 
-fileInput.addEventListener("change", onFileChange)
