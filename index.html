@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,30 +10,38 @@
 </head>
 
 <body>
-    <div class="color">
-        <input id="color" type="color">
-        <div class="color-option" style="background-color: #00a8ff;" data-color="#00a8ff"></div>
-        <div class="color-option" style="background-color: #9c88ff;" data-color="#9c88ff"></div>
-        <div class="color-option" style="background-color: #fbc531;" data-color="#fbc531"></div>
-        <div class="color-option" style="background-color: #4cd137;" data-color="#4cd137"></div>
-        <div class="color-option" style="background-color: #487eb0;" data-color="#487eb0"></div>
-        <div class="color-option" style="background-color: #e84118;" data-color="#e84118"></div>
-        <div class="color-option" style="background-color: #f5f6fa;" data-color="#f5f6fa"></div>
-        <div class="color-option" style="background-color: #7f8fa6;" data-color="#7f8fa6"></div>
-        <div class="color-option" style="background-color: #273c75;" data-color="#273c75"></div>
-        <div class="color-option" style="background-color: #353b48;" data-color="#353b48"></div>
-    </div>
-    <canvas></canvas>
-    <button id="mode">Fill</button>
-    <button id="eraser">Eraser</button>
-    <button id="reset">Reset</button>
-    <input id="line-width" type="range" min="1" max="20" value="5" step="0.1">
-    <div>
-        <input id="text" type="text" placeholder="Write and double click">
-        <button id="save">Save</button>
-        <input id="file" type="file" accept="image/*">
-    </div>
+    <section>
+        <div class="color-column">
+            <input id="color" type="color">
+        </div>
+        <div class="color-column">
+            <div class="color-option" style="background-color: #00a8ff;" data-color="#00a8ff"></div>
+            <div class="color-option" style="background-color: #9c88ff;" data-color="#9c88ff"></div>
+            <div class="color-option" style="background-color: #fbc531;" data-color="#fbc531"></div>
+            <div class="color-option" style="background-color: #4cd137;" data-color="#4cd137"></div>
+            <div class="color-option" style="background-color: #487eb0;" data-color="#487eb0"></div>
+            <div class="color-option" style="background-color: #e84118;" data-color="#e84118"></div>
+            <div class="color-option" style="background-color: #f5f6fa;" data-color="#f5f6fa"></div>
+            <div class="color-option" style="background-color: #7f8fa6;" data-color="#7f8fa6"></div>
+            <div class="color-option" style="background-color: #273c75;" data-color="#273c75"></div>
+            <div class="color-option" style="background-color: #353b48;" data-color="#353b48"></div>
+        </div>
+        <input id="line-width" type="range" min="1" max="20" value="5" step="0.1">
 
+    </section>
+    <canvas></canvas>
+    <section>
+        <div class="draw-btn">
+            <button id="reset">Reset</button>
+            <button id="mode">Fill</button>
+            <input id="text" type="text" placeholder="Write and double click">
+            <button id="eraser">Eraser</button>
+        </div>
+        <div class="draw-file">
+            <button id="save">Save</button>
+            <input id="file" type="file" accept="image/*">
+        </div>
+    </section>
     <script src="add.js"></script>
 </body>
 
