@@ -12,6 +12,7 @@ const eraser = document.getElementById("eraser-btn")
 const reset = document.getElementById("reset-btn")
 
 const textInput = document.getElementById("text-input")
+const imageInput = document.getElementById("image-input")
 
 
 canvas.width = 800
@@ -100,11 +101,20 @@ function onDoubleClick(event) {
         ctx.font = "50px serif"
         ctx.fillText(text, event.offsetX, event.offsetY)
         ctx.restore()
-        console.log(13)
     }
 }
 
+function onImageChange(event) {
+    const imageFile = event.target.files[0]
+    const url = URL.createObjectURL(imageFile)
+    const image = new Image(url)
+    image.src = url
+    image.onload = function () {
+        ctx.drawImage(image, 0, 0, 800, 800)
+        imageInput.value = null
+    }
 
+}
 
 
 
@@ -125,5 +135,7 @@ modeBtn.addEventListener("click", modeBtnClick)
 
 color.addEventListener("change", onColocChange)
 colorOption.forEach(color => color.addEventListener("click", onColorOptionClick))
+
+imageInput.addEventListener("change", onImageChange)
 
 
