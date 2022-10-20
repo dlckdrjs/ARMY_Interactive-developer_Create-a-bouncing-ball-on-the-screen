@@ -13,10 +13,13 @@ const reset = document.getElementById("reset-btn")
 
 const fileInput = document.getElementById("file")
 
+const textInput = document.getElementById("text")
+
 
 canvas.width = 800
 canvas.height = 800
 
+ctx.lineCap = "round"
 ctx.lineWidth = lineWidth.value
 
 let isPainting = false
@@ -105,11 +108,25 @@ function onFileChange(event) {
 
 }
 
+function onDoubleClick(event) {
+    const text = textInput.value
+
+
+    if (text !== "") {
+        ctx.save()
+        ctx.lineWidth = 1
+        ctx.font = "68px serif"
+        ctx.strokeText(text, event.offsetX, event.offsetY)
+        ctx.restore()
+    }
+}
+
 canvas.addEventListener("mousemove", onMouseMove)
 canvas.addEventListener("mousedown", startPainting)
 canvas.addEventListener("mouseup", cancelPainting)
 canvas.addEventListener("mouseleave", cancelPainting)
 canvas.addEventListener("click", onCavasClick)
+canvas.addEventListener("dblclick", onDoubleClick)
 
 lineWidth.addEventListener("change", onLineWidthChange)
 
