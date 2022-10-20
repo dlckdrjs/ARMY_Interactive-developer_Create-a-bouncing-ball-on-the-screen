@@ -2,140 +2,131 @@ const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 
 const lineWidth = document.getElementById("line-width")
-
-
-const color = document.getElementById("color")
+const colors = document.getElementById("color")
 const colorOption = Array.from(document.getElementsByClassName("color-option"))
+const mode = document.getElementById("mode")
+const eraser = document.getElementById("eraser")
+const reset = document.getElementById("reset")
+const file = document.getElementById("file")
+const text = document.getElementById("text")
+const save = document.getElementById("save")
 
-const modeBtn = document.getElementById("mode-btn-fill")
-const eraser = document.getElementById("eraser-btn")
-const reset = document.getElementById("reset-btn")
-
-const textInput = document.getElementById("text-input")
-const imageInput = document.getElementById("image-input")
-
-
-canvas.width = 800
-canvas.height = 800
-
-ctx.lineCap = "round"
+canvas.width = 500
+canvas.height = 500
 ctx.lineWidth = lineWidth.value
+ctx.lineCap = "round"
+
 
 let isPainting = false
 let isFilling = false
 
 function onMouseMove(event) {
+
     if (isPainting) {
         ctx.lineTo(event.offsetX, event.offsetY)
         ctx.stroke()
         return
     }
     ctx.moveTo(event.offsetX, event.offsetY)
+
 }
 
-function startPainting() {
+function onStartPaint() {
     isPainting = true
 }
 
-function cancelPainting() {
+function onEndPaint() {
     isPainting = false
     ctx.beginPath()
+
 }
 
 function onLineWidthChange(event) {
-    ctx.lineWidth = event.target.value
-
+    const lineValue = event.target.value
+    ctx.lineWidth = lineValue
 }
 
-
-
-function onColocChange(event) {
-    ctx.strokeStyle = event.target.value
-    ctx.fillStyle = event.target.value
-
+function onColorChange(event) {
+    const color = event.target.value
+    ctx.strokeStyle = color
+    ctx.fillStyle = color
 }
 
-function onColorOptionClick(event) {
-    ctx.strokeStyle = event.target.dataset.color
-    ctx.fillStyle = event.target.dataset.color
-    color.value = event.target.dataset.color
-
+function colorOptionClick(event) {
+    const colorValue = event.target.dataset.color
+    ctx.strokeStyle = colorValue
+    ctx.fillStyle = colorValue
+    colors.value = colorValue
 }
 
-
-
-function modeBtnClick() {
+function onModeClick() {
     if (isFilling) {
         isFilling = false
-        modeBtn.innerText = "Fill"
+        mode.innerText = "Fill"
     } else {
         isFilling = true
-        modeBtn.innerText = "Draw"
+        mode.innerText = "Draw"
     }
-
 }
 
-function onCavasClick() {
+function onCanvasClick() {
     if (isFilling) {
-        ctx.fillRect(0, 0, 800, 800)
+        ctx.fillRect(0, 0, 500, 500)
     }
-
 }
 
 function onEraserClick() {
+    isFilling = false
     ctx.strokeStyle = "white"
-    modeBtn.innerText = "Draw"
+    mode.innerText = "Fill"
 }
 
 function onResetClick() {
     ctx.fillStyle = "white"
-    ctx.fillRect(0, 0, 800, 800)
+    ctx.fillRect(0, 0, 500, 500)
 }
 
-function onDoubleClick(event) {
-    const text = textInput.value
-
-    if (text !== "") {
-        ctx.save()
-        ctx.lineWidth = 1
-        ctx.font = "50px serif"
-        ctx.fillText(text, event.offsetX, event.offsetY)
-        ctx.restore()
-    }
-}
-
-function onImageChange(event) {
-    const imageFile = event.target.files[0]
-    const url = URL.createObjectURL(imageFile)
-    const image = new Image(url)
+function onFlieChange(event) {
+    const file = event.target.files[0]
+    const url = URL.createObjectURL(file)
+    const image = new Image()
     image.src = url
-    image.onload = function () {
-        ctx.drawImage(image, 0, 0, 800, 800)
-        imageInput.value = null
-    }
 
+    image.onload = function () {
+        ctx.drawImage(image, 0, 0, 500, 500)
+    }
 }
 
+function onCanvasDoubleClick(event) {
+    const textValue = text.value
 
+    ctx.save()
+    ctx.lineWidth = 1
+    ctx.font = "50px Fira Sans"
+    ctx.fillText(textValue, event.offsetX, event.offsetY)
+    ctx.restore()
+}
 
+function onSaveClick() {
+    const url = canvas.toDataURL()
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "myDrawingInage.png"
+    a.click()
+}
 
 canvas.addEventListener("mousemove", onMouseMove)
-canvas.addEventListener("mousedown", startPainting)
-canvas.addEventListener("mouseup", cancelPainting)
-canvas.addEventListener("mouseleave", cancelPainting)
-canvas.addEventListener("click", onCavasClick)
-canvas.addEventListener("dblclick", onDoubleClick)
-
+canvas.addEventListener("mousedown", onStartPaint)
+canvas.addEventListener("mouseup", onEndPaint)
+canvas.addEventListener("mouseleave", onEndPaint)
+canvas.addEventListener("click", onCanvasClick)
+canvas.addEventListener("dblclick", onCanvasDoubleClick)
 
 lineWidth.addEventListener("change", onLineWidthChange)
-
+colors.addEventListener("change", onColorChange)
+colorOption.forEach(color => color.addEventListener("click", colorOptionClick))
+mode.addEventListener("click", onModeClick)
 eraser.addEventListener("click", onEraserClick)
 reset.addEventListener("click", onResetClick)
-modeBtn.addEventListener("click", modeBtnClick)
-
-color.addEventListener("change", onColocChange)
-colorOption.forEach(color => color.addEventListener("click", onColorOptionClick))
-
-imageInput.addEventListener("change", onImageChange)
-
-
+file.addEventListener("change", onFlieChange)
+save.addEventListener("click", onSaveClick)
