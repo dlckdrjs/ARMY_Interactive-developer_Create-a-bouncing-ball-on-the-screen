@@ -10,10 +10,8 @@ const colorOption = Array.from(document.getElementsByClassName("color-option"))
 const modeBtn = document.getElementById("mode-btn-fill")
 const eraser = document.getElementById("eraser-btn")
 const reset = document.getElementById("reset-btn")
-const saveBtn = document.getElementById("save")
 
-const fileInput = document.getElementById("file")
-const textInput = document.getElementById("text")
+const textInput = document.getElementById("text-input")
 
 
 canvas.width = 800
@@ -93,42 +91,23 @@ function onResetClick() {
     ctx.fillRect(0, 0, 800, 800)
 }
 
-function onFileChange(event) {
-    const file = event.target.files[0]
-    const url = URL.createObjectURL(file)
-
-    const image = new Image()
-    image.src = url
-
-    image.onload = function () {
-        ctx.drawImage(image, 0, 0, 800, 800)
-    }
-
-    fileInput.value = null
-
-}
-
 function onDoubleClick(event) {
     const text = textInput.value
-
 
     if (text !== "") {
         ctx.save()
         ctx.lineWidth = 1
-        ctx.font = "68px serif"
-        ctx.strokeText(text, event.offsetX, event.offsetY)
+        ctx.font = "50px serif"
+        ctx.fillText(text, event.offsetX, event.offsetY)
         ctx.restore()
+        console.log(13)
     }
 }
 
-function onSaveClick() {
-    const url = canvas.toDataURL()
-    const a = document.createElement("a")
 
-    a.href = url
-    a.download = "myDrawung.png"
-    a.click()
-}
+
+
+
 
 canvas.addEventListener("mousemove", onMouseMove)
 canvas.addEventListener("mousedown", startPainting)
@@ -137,14 +116,13 @@ canvas.addEventListener("mouseleave", cancelPainting)
 canvas.addEventListener("click", onCavasClick)
 canvas.addEventListener("dblclick", onDoubleClick)
 
+
 lineWidth.addEventListener("change", onLineWidthChange)
 
 eraser.addEventListener("click", onEraserClick)
 reset.addEventListener("click", onResetClick)
 modeBtn.addEventListener("click", modeBtnClick)
-saveBtn.addEventListener("click", onSaveClick)
 
-fileInput.addEventListener("change", onFileChange)
 color.addEventListener("change", onColocChange)
 colorOption.forEach(color => color.addEventListener("click", onColorOptionClick))
 
