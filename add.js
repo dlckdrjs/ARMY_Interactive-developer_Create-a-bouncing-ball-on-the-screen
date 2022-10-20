@@ -11,6 +11,8 @@ const color = document.getElementById("color")
 const colorOption = Array.from(document.getElementsByClassName("color-option"))
 const reset = document.getElementById("reset-btn")
 
+const fileInput = document.getElementById("file")
+
 
 canvas.width = 800
 canvas.height = 800
@@ -88,6 +90,21 @@ function onResetClick() {
     ctx.fillRect(0, 0, 800, 800)
 }
 
+function onFileChange(event) {
+    const file = event.target.files[0]
+    const url = URL.createObjectURL(file)
+
+    const image = new Image()
+    image.src = url
+
+    image.onload = function () {
+        ctx.drawImage(image, 0, 0, 800, 800)
+    }
+
+    fileInput.value = null
+
+}
+
 canvas.addEventListener("mousemove", onMouseMove)
 canvas.addEventListener("mousedown", startPainting)
 canvas.addEventListener("mouseup", cancelPainting)
@@ -103,3 +120,5 @@ color.addEventListener("change", onColocChange)
 colorOption.forEach(color => color.addEventListener("click", onColorOptionClick))
 
 modeBtn.addEventListener("click", modeBtnClick)
+
+fileInput.addEventListener("change", onFileChange)
